@@ -3,11 +3,11 @@ Create a file called "tokens.py" with
 ```
 KEY = <Steam Web API Key>
 
-SUBREDDIT = 'dota2'
+SUBREDDIT = "dota2"
 REDDIT_CLIENT_SECRET = "secret"
 REDDIT_CLIENT_ID = "client_id"
 
-TOURNAMENT_USER = 'D2TournamentThreads'
+TOURNAMENT_USER = "D2TournamentThreads"
 TOURNAMENT_PWD = <D2TournamentThreads password>
 
 MOD = <mod username>
