@@ -17,4 +17,5 @@ TEAMS = {
     3331948: '[](/logo-lfy "LGD.Forever Young")',
     15: '[](/logo-lgd "LGD Gaming")',
     1883502: '[](/logo-virtus "Virtus.Pro")',
+    543897: '[](/logo-mineski "Mineski")',
 }
