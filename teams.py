@@ -18,4 +18,6 @@ TEAMS = {
     15: '[](/logo-lgd "LGD Gaming")',
     1883502: '[](/logo-virtus "Virtus.Pro")',
     543897: '[](/logo-mineski "Mineski")',
+    3: '[](/logo-col "compLexity Gaming")',
+    726228: '[](/logo-vici "Vici Gaming")',
 }
