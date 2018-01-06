@@ -238,7 +238,7 @@ def get_completed_match_info(match_id):
 
 def update_post(post_id, match_id):
     post = TOURNAMENT_ACCT.submission(post_id)
-    print("Updating '%s' for match %s" % (post.title, match_id))
+    print("[matchbot] Updating '%s' for match %s" % (post.title, match_id))
 
     body = post.selftext
     start_idx = body.find(START_TAG) + len(START_TAG)

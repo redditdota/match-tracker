@@ -1,7 +1,7 @@
 import praw
 from tokens import *
 import matchbot
-import _thread
+import threading
 import time
 
 APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR",
@@ -9,7 +9,6 @@ APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR",
 TOURNAMENT_SUB = TOURNAMENT_ACCT.subreddit(SUBREDDIT)
 REQUIRED_FIELDS = ["match_id", "post_id"]
 TRACKED_POSTS = dict()
-TRACKED_MATCHES = dict()
 
 def parse_message(message):
     error = []
@@ -46,17 +45,29 @@ def update(message):
             message.mark_read()
             return
 
+    post = values["post_id"]
+    match = values["match_id"]
+
+    if post in TRACKED_POSTS:
+        message.reply("Post %s is already live updating with a match, uhoh!" % post)
+        message.mark_read()
+        return
 
     try:
-        t = _thread.start_new_thread(matchbot.update_post, (values["post_id"], values["match_id"], ) )
-        TRACKED_POSTS[values["post_id"]] = t
-        TRACKED_MATCHES[values["match_id"]] = t
+        t = threading.Thread(target=matchbot.update_post, args=(post, match, ))
+        t.start()
+        TRACKED_POSTS[post] = t
         message.mark_read()
     except:
         print("Error: unable to start thread")
 
 
 while True:
+    tracked = list(TRACKED_POSTS.keys())
+    for post in tracked:
+        if TRACKED_POSTS[post].is_alive():
+            del TRACKED_POSTS[post]
+
     for message in TOURNAMENT_ACCT.inbox.unread():
         if message.author not in APPROVED_SUBMITTERS:
             message.reply("[bot] Sorry, you are not an approved submitter! Please ping sushi on discord. FeelsWeirdMan")
@@ -70,7 +81,7 @@ while True:
             message.reply("[bot] Sorry, %s is not a valid command. Ping sushi if you're confused" % message.subject)
             message.mark_read()
 
-    #time.sleep(60)
+    #time.sleep(10)
 
 
 
