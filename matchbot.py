@@ -263,7 +263,7 @@ def update_post(post_id, match_id):
     finished = False
     while not finished:
         try:
-            finished = _update_post(argv[1], argv[2])
+            finished = _update_post(post_id, match_id)
         except Exception as e:
             print("Error " + str(e))
             pass
