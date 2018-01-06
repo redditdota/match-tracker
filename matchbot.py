@@ -236,7 +236,7 @@ def get_completed_match_info(match_id):
     return text
 
 
-def update_post(post_id, match_id):
+def _update_post(post_id, match_id):
     post = TOURNAMENT_ACCT.submission(post_id)
     print("[matchbot] Updating '%s' for match %s" % (post.title, match_id))
 
@@ -258,11 +258,23 @@ def update_post(post_id, match_id):
         post.edit(new_body)
     return finished
 
+
+def update_post(post_id, match_id):
+    finished = False
+    while not finished:
+        try:
+            finished = _update_post(argv[1], argv[2])
+        except Exception as e:
+            print("Error " + str(e))
+            pass
+        time.sleep(30)
+
+
 def main(argv):
     finished = False
     while not finished:
         try:
-            finished = update_post(argv[1], argv[2])
+            finished = _update_post(argv[1], argv[2])
         except Exception as e:
             print("Error " + str(e))
             pass

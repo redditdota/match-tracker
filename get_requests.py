@@ -89,6 +89,7 @@ wiki_thread.start()
 
 while True:
     tracked = list(TRACKED_POSTS.keys())
+    print("[bot] tracking %d posts" % len(tracked))
     for post in tracked:
         if TRACKED_POSTS[post].is_alive():
             del TRACKED_POSTS[post]
