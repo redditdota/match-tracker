@@ -1,11 +1,12 @@
 import praw
 from tokens import *
 import matchbot
-import threading
+import multiprocessing
 import time
 
 APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR", "monkeydoestoo",
-                       "coronaria", "Leafeator", "Decency", "0Hellspawn0", "Intolerable"]
+                        "cloverdota", "0dst", "suriranyar-",
+                        "coronaria", "Leafeator", "Decency", "0Hellspawn0", "Intolerable"]
 SUBJECTS = ["matchbot", "stop"]
 TOURNAMENT_SUB = TOURNAMENT_ACCT.subreddit(SUBREDDIT)
 WIKI = praw.models.WikiPage(TOURNAMENT_ACCT, "dota2", "live_matches")
@@ -52,14 +53,13 @@ def update(message):
     match = values["match_id"]
 
     if post in TRACKED_POSTS:
-        message.reply("Post %s is already live updating with a match, uhoh!" % post)
-        message.mark_read()
-        return
+        message.reply("Post %s is already live updating with a match, that one will be killed monkaS!" % post)
+        TRACKED_POSTS[post].terminate()
 
     try:
-        t = threading.Thread(target=matchbot.update_post, args=(post, match, ))
-        t.start()
-        TRACKED_POSTS[post] = t
+        p = multiprocessing.Process(target=matchbot.update_post, args=(post, match, ))
+        p.start()
+        TRACKED_POSTS[post] = p
         message.mark_read()
     except:
         print("Error: unable to start thread")
@@ -83,7 +83,7 @@ def wiki():
         time.sleep(60)
 
 
-wiki_thread = threading.Thread(target=wiki, args=())
+wiki_thread = multiprocessing.Process(target=wiki, args=())
 wiki_thread.start()
 
 
@@ -91,7 +91,7 @@ while True:
     tracked = list(TRACKED_POSTS.keys())
     print("[bot] tracking %d posts" % len(tracked))
     for post in tracked:
-        if TRACKED_POSTS[post].is_alive():
+        if not TRACKED_POSTS[post].is_alive():
             del TRACKED_POSTS[post]
 
     for message in TOURNAMENT_ACCT.inbox.unread():

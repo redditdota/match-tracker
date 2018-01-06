@@ -73,7 +73,7 @@ def get_team_name(team):
 def get_bans(team):
     bans = [""] * 5
     i = 0
-    for hero in team["bans"]:
+    for hero in team.get("bans", []):
         bans[i] = HEROES[hero["hero_id"]]
         i += 1
     return bans
@@ -82,7 +82,7 @@ def get_bans(team):
 def get_picks(team):
     picks = [""] * 5
     i = 0
-    for hero in team["picks"]:
+    for hero in team.get("picks", []):
         picks[i] = HEROES[hero["hero_id"]]
         i += 1
     return picks
@@ -134,7 +134,7 @@ def parse_live_game(game):
 
     rb = get_bans(scoreboard["radiant"])
     db = get_bans(scoreboard["dire"])
-    text += BANS % (radiant, rb[0], rb[1], db[0], db[1], dire, rb[2], rb[3], db[2], db[3], rb[4], db[4])
+    text += BANS % (radiant, rb[0], rb[1], db[0], db[1], dire, rb[2], rb[3], db[2], db[3], rb[4], rd[5], db[4], db[5])
     text += "\n"
 
     rp = get_picks(scoreboard["radiant"])
