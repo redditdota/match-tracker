@@ -1,19 +1,12 @@
 import praw
 from tokens import *
+import matchbot
+import _thread
 
-APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "HAPPYSADPERSON", "FeeedXD", "Gamerhcp", "772-LR",
+APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR",
                        "coronaria", "Leafeator", "Decency", "0Hellspawn0", "Intolerable"]
 TOURNAMENT_SUB = TOURNAMENT_ACCT.subreddit(SUBREDDIT)
-REQUIRED_FIELDS = ["match_id", "title"]
-OPTIONAL_FIELDS = ["title"]
-
-def submit_post(values):
-
-
-
-def update_post(post_id, match_id):
-
-
+REQUIRED_FIELDS = ["match_id", "post_id"]
 
 while True:
     for message in TOURNAMENT_ACCT.inbox.unread():
@@ -39,5 +32,11 @@ while True:
                     print(reply)
                     continue
 
-            submit_post(values)
+            print(values)
 
+            try:
+                _thread.start_new_thread(matchbot.update_post, (values["post_id"], values["match_id"], ) )
+                message.mark_read()
+            except:
+                print("Error: unable to start thread")
+    time.sleep(60)

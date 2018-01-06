@@ -231,7 +231,7 @@ def get_completed_match_info(match_id):
 
     text += "More information on [Dotabuff](http://dotabuff.com/matches/%d), \
     [OpenDota](https://www.opendota.com/matches/%d), \
-    and [datDota](http://datdota.com/match.php?q=%d)" % (match_id, match_id, match_id)
+    and [datDota](http://datdota.com/matches/%d)" % (match_id, match_id, match_id)
 
     return text
 
