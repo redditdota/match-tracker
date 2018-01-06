@@ -102,7 +102,7 @@ while True:
             message.mark_read()
             continue
         else:
-            print("[bot] a new message from %s!" + message.author)
+            print("[bot] a new message from %s!" % str(message.author))
 
         if message.subject == "matchbot":
             update(message)
