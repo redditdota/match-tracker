@@ -85,14 +85,20 @@ def wiki():
 
 wiki_thread = multiprocessing.Process(target=wiki, args=())
 wiki_thread.start()
+TRACKED_POSTS["wiki"] = wiki_thread
 
 
 while True:
     tracked = list(TRACKED_POSTS.keys())
     print("[bot] tracking %d posts" % len(tracked))
     for post in tracked:
-        if not TRACKED_POSTS[post].is_alive():
-            del TRACKED_POSTS[post]
+        process = TRACKED_POSTS[post]
+        if not process.is_alive():
+            if process.exitcode < 0:
+                TRACKED_POSTS[post] = multiprocessing.Process(target=process._target, args=process._args)
+                TRACKED_POSTS[post].start()
+            else:
+                del TRACKED_POSTS[post]
 
     for message in TOURNAMENT_ACCT.inbox.unread():
         if message.subject not in SUBJECTS:

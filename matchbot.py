@@ -13,6 +13,7 @@ from players import *
 
 START_TAG = "[](#start-match-details)"
 END_TAG = "[](#end-match-details)"
+GAME_NUMBER = 1
 
 def get(url):
     while True:
@@ -116,8 +117,10 @@ def get_player_stats(players, player_names):
     return list(itertools.chain.from_iterable(info))
 
 def parse_live_game(game):
-
-    text = ""
+    global GAME_NUMBER
+    GAME_NUMBER = 1 + game["radiant_series_wins"] + game["dire_series_wins"]
+    text = "# Game %d \n" % GAME_NUMBER
+    text += "##Live Updating...\n"
 
     radiant = get_team_name(game["radiant_team"])
     dire = get_team_name(game["dire_team"])
@@ -125,9 +128,9 @@ def parse_live_game(game):
     scoreboard = game["scoreboard"]
     duration = scoreboard["duration"]
     if duration == 0:
-        text = "##In Draft Phase"
+        text += "##In Draft Phase"
     else:
-        text = "##Duration: %02d:%02d" % (math.floor(duration / 60), duration % 60)
+        text += "##Duration: %02d:%02d" % (math.floor(duration / 60), duration % 60)
 
     text += SCORE_BOARD % (radiant, scoreboard["radiant"]["score"], scoreboard["dire"]["score"], dire)
     text += "\n"
@@ -182,8 +185,8 @@ def get_completed_match_info(match_id):
         else:
             victor = dire
 
-
-    text = "##%s Victory!\n" % victor
+    text = "# Game %d\n" % GAME_NUMBER
+    text += "##%s Victory!\n" % victor
 
     duration = game["duration"]
     text += "##Duration: %02d:%02d" % (math.floor(duration / 60), duration % 60)
@@ -247,10 +250,9 @@ def _update_post(post_id, match_id):
     finished = False
     match_info = get_live_match_info(match_id)
     if len(match_info) == 0:
-        match_info = get_completed_match_info(match_id)
+        match_info = get_completed_match_info(match_id, game_number)
         finished = True
     else:
-        match_info = "##Live Updating...\n" + match_info
         finished = False
 
     new_body = body[:start_idx] + "\n" + match_info + "\n" + body[end_idx:]
