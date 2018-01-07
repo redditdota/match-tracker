@@ -191,8 +191,8 @@ def get_completed_match_info(match_id):
     text += SCORE_BOARD % (radiant, game["radiant_score"], game["dire_score"], dire)
     text += "\n"
 
-    rb = [""] * 5
-    db = [""] * 5
+    rb = [""] * 6
+    db = [""] * 6
     rp = [""] * 5
     dp = [""] * 5
 
@@ -217,7 +217,7 @@ def get_completed_match_info(match_id):
                 db[db_idx] = HEROES[pb["hero_id"]]
                 db_idx += 1
 
-    text += BANS % (radiant, rb[0], rb[1], db[0], db[1], dire, rb[2], rb[3], db[2], db[3], rb[4], db[4])
+    text += BANS % (radiant, rb[0], rb[1], db[0], db[1], dire, rb[2], rb[3], db[2], db[3], rb[4], rb[5], db[4], db[5])
     text += "\n"
     text += PICKS % (radiant, rp[0], rp[1], dp[0], dp[1], dire, rp[2], rp[3], dp[2], dp[3], rp[4], dp[4])
     text += "\n"
