@@ -250,7 +250,7 @@ def _update_post(post_id, match_id):
     finished = False
     match_info = get_live_match_info(match_id)
     if len(match_info) == 0:
-        match_info = get_completed_match_info(match_id, game_number)
+        match_info = get_completed_match_info(match_id)
         finished = True
     else:
         finished = False
