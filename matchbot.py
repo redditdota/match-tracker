@@ -8,7 +8,6 @@ from tokens import *
 from template import *
 from teams import *
 from heroes import *
-from players import *
 
 
 START_TAG = "[](#start-match-details)"
@@ -54,15 +53,12 @@ def get_match_detail(match_id):
 
 
 def get_player_name(account_id):
-    response = get("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/V001/?steamids=%d&key=%s" % (76561197960265728 + account_id, KEY))
-    if "response" not in response:
-        print("GetPlayerSummaries Error:\n" + str(response))
-        return {}
-    if "players" not in response["response"] or len(response["response"]["players"]["player"]) != 1:
-        print("GetPlayerSummaries Error:\n" + str(response))
-        return {}
+    response = get("https://api.steampowered.com/IDOTA2Fantasy_570/GetPlayerOfficialInfo/v1/?accountid=%s&key=%s" % (account_id, KEY))
+    if "result" not in response or "Name" not in response["result"]:
+        print("GetPlayerOfficialInfo Error:\n" + str(response))
+        return str(account_id)
 
-    return response["response"]["players"]["player"][0]["personaname"]
+    return response["result"]["Name"]
 
 def get_team_name(team):
     if team["team_id"] in TEAMS:
@@ -93,7 +89,7 @@ def get_player_names(game):
     names = {}
     for player in game["players"]:
         aid = player["account_id"]
-        names[aid] = player.get("name", PLAYERS.get(aid, get_player_name(aid)))
+        names[aid] = player.get("name", get_player_name(aid))
     return names
 
 def get_player_stats(players, player_names):
@@ -149,6 +145,8 @@ def parse_live_game(game):
     rplayers = get_player_stats(scoreboard["radiant"]["players"], player_names)
     dplayers = get_player_stats(scoreboard["dire"]["players"], player_names)
     text += LIVE % (*rplayers, *dplayers)
+    text += "\n"
+    text += "_____"
     text += "\n"
 
     return text
@@ -236,6 +234,10 @@ def get_completed_match_info(match_id):
     [OpenDota](https://www.opendota.com/matches/%d), \
     and [datDota](http://datdota.com/matches/%d)" % (match_id, match_id, match_id)
 
+    text += "\n"
+    text += "_____"
+    text += "\n"
+
     return text
 
 
@@ -244,18 +246,20 @@ def _update_post(post_id, match_id):
     print("[matchbot] Updating '%s' for match %s" % (post.title, match_id))
 
     body = post.selftext
-    start_idx = body.find(START_TAG) + len(START_TAG)
+    start_idx = body.find(START_TAG)
     end_idx = body.find(END_TAG)
 
     finished = False
     match_info = get_live_match_info(match_id)
+    new_body = ""
     if len(match_info) == 0:
         match_info = get_completed_match_info(match_id)
+        new_body = body[:start_idx] + "\n" + match_info + "\n" + START_TAG + "\n" + body[end_idx:]
         finished = True
     else:
+        new_body = body[:start_idx + len(START_TAG)] + "\n" + match_info + "\n" + body[end_idx:]
         finished = False
 
-    new_body = body[:start_idx] + "\n" + match_info + "\n" + body[end_idx:]
     if len(match_info) != 0:
         post.edit(new_body)
     return finished
