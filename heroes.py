@@ -107,7 +107,7 @@ HEROES = [
 '[](/hero-techies "Techies")',
 '[](/hero-emberspirit "Ember Spirit")',
 '[](/hero-earthspirit "Earth Spirit")',
-'[](/hero-underlord "Underlord")',
+'[](/hero-abyssalunderlord "Underlord")',
 '[](/hero-terrorblade "Terrorblade")',
 '[](/hero-phoenix "Phoenix")',
 '[](/hero-oracle "Oracle")',
