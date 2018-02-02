@@ -121,10 +121,11 @@ def parse_live_game(game):
     radiant = get_team_name(game["radiant_team"])
     dire = get_team_name(game["dire_team"])
 
-    duration = 0
-    if "scoreboard" in game:
-        scoreboard = game["scoreboard"]
-        duration = scoreboard["duration"]
+    if "scoreboard" not in game:
+        return "##Pre-Draft Phase\n"
+
+    scoreboard = game["scoreboard"]
+    duration = scoreboard["duration"]
 
     if duration == 0:
         text += "##In Draft Phase"
