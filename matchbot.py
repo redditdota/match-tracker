@@ -222,7 +222,7 @@ def get_completed_match_info(match_id):
                 db[db_idx] = HEROES[pb["hero_id"]]
                 db_idx += 1
 
-    text += BANS % (radiant, rb[0], rb[1], rb[2], db[0], db[1], db[2] dire, rb[3], rb[4], db[3], db[4], rb[5], db[5])
+    text += BANS % (radiant, rb[0], rb[1], rb[2], db[0], db[1], db[2], dire, rb[3], rb[4], db[3], db[4], rb[5], db[5])
     text += "\n"
     text += PICKS % (radiant, rp[0], rp[1], dp[0], dp[1], dire, rp[2], rp[3], dp[2], dp[3], rp[4], dp[4])
     text += "\n"
