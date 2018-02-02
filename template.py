@@ -5,11 +5,11 @@ SCORE_BOARD = """
 """
 
 BANS = """
-| Radiant | Bans  | vs. |  Bans | Dire |
-|:-------:|:-----:|:---:|:-----:|:----:|
-| %s      | %s %s | vs. | %s %s |  %s  |
-|         | %s %s | vs. | %s %s |      |
-|         | %s %s | vs. | %s %s |      |
+| Radiant | Bans     | vs. | Bans     | Dire |
+|:-------:|:--------:|:---:|:--------:|:----:|
+| %s      | %s %s %s | vs. | %s %s %s |  %s  |
+|         | %s %s    | vs. | %s %s    |      |
+|         | %s       | vs. | %s       |      |
 """
 
 PICKS = """
