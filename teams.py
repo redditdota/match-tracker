@@ -23,4 +23,5 @@ TEAMS = {
     5027210: '[](/logo-vgj "VGJ.Thunder")',
     36: '[](/logo-navi "Natus Vincere")',
     5039050: '[](/logo-kinguin "Team Kinguin")',
+    5026801: '[](/logo-optic "OpTic Gaming")',
 }
