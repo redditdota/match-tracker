@@ -25,4 +25,5 @@ TEAMS = {
     5039050: '[](/logo-kinguin "Team Kinguin")',
     5026801: '[](/logo-optic "OpTic Gaming")',
     350190: '[](/logo-fnatic "Fnatic")',
+    2006913: '[](/logo-vega "Vega Squadron")',
 }
