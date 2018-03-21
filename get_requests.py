@@ -104,12 +104,12 @@ while True:
                 del TRACKED_POSTS[post]
 
     for message in TOURNAMENT_ACCT.inbox.unread():
+        message.mark_read()
         if message.subject not in SUBJECTS:
             continue
 
         if message.author not in APPROVED_SUBMITTERS:
             message.reply("[bot] Sorry, you are not an approved submitter! Please ping sushi on discord. FeelsWeirdMan")
-            message.mark_read()
             continue
         else:
             log("[bot] a new message from %s!" % str(message.author))
@@ -120,6 +120,5 @@ while True:
             stop(message)
         else:
             message.reply("[bot] Sorry, %s is not a valid command. Ping sushi if you're confused" % message.subject)
-            message.mark_read()
 
     time.sleep(30)

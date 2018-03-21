@@ -28,4 +28,5 @@ TEAMS = {
     2006913: '[](/logo-vega "Vega Squadron")',
     2512249: '[](/logo-dc "Digital Chaos")',
     5196328: '[](/logo-dc "Digital Chaos")',
+    5051649: '[](/logo-immortals "Immortals")',
 }
