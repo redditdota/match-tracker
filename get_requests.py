@@ -31,7 +31,7 @@ def parse_message(message):
 
     if len(error) > 0:
         message.reply("\n".join(error))
-        print("\n".join(error))
+        log("\n".join(error))
         message.mark_read()
         return None
     else:
@@ -42,13 +42,13 @@ def update(message):
     values = parse_message(message)
     if values is None:
         return
-    print(values)
+    log(values)
 
     for field in REQUIRED_FIELDS:
         if field not in values:
             reply = "[bot] missing field: " + field
             message.reply(reply)
-            print(reply)
+            log(reply)
             message.mark_read()
             return
 
@@ -65,12 +65,12 @@ def update(message):
         TRACKED_POSTS[post] = p
         message.mark_read()
     except:
-        print("Error: unable to start thread")
+        log("Error: unable to start thread")
 
 
 def wiki():
     while True:
-        print("[bot] Updating wiki")
+        log("[bot] Updating wiki")
         games  = matchbot.get_live_league_games()
         text = []
 
@@ -93,7 +93,7 @@ TRACKED_POSTS["wiki"] = wiki_thread
 
 while True:
     tracked = list(TRACKED_POSTS.keys())
-    print("[bot] tracking %d posts" % len(tracked))
+    log("[bot] tracking %d posts" % len(tracked))
     for post in tracked:
         process = TRACKED_POSTS[post]
         if not process.is_alive():
@@ -112,7 +112,7 @@ while True:
             message.mark_read()
             continue
         else:
-            print("[bot] a new message from %s!" % str(message.author))
+            log("[bot] a new message from %s!" % str(message.author))
 
         if message.subject == "matchbot":
             update(message)
