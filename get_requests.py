@@ -13,6 +13,9 @@ WIKI = praw.models.WikiPage(TOURNAMENT_ACCT, "dota2", "live_matches")
 REQUIRED_FIELDS = ["match_id", "post_id"]
 TRACKED_POSTS = dict()
 
+def log(string):
+    print("[bot] [%s]" % time.strftime("%c") + string)
+
 def parse_message(message):
     error = []
     values = {}
