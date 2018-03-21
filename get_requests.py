@@ -25,7 +25,7 @@ def parse_message(message):
 
         parts = line.split(":")
         if len(parts) != 2:
-            error.append("[bot] invalid line: " + line)
+            error.append("invalid line: " + line)
             continue
         values[parts[0].strip()] = parts[1].strip().replace("\"", "").replace("\'", "")
 
@@ -46,7 +46,7 @@ def update(message):
 
     for field in REQUIRED_FIELDS:
         if field not in values:
-            reply = "[bot] missing field: " + field
+            reply = "missing field: " + field
             message.reply(reply)
             log(reply)
             message.mark_read()
@@ -70,7 +70,7 @@ def update(message):
 
 def wiki():
     while True:
-        log("[bot] Updating wiki")
+        log("Updating wiki")
         games  = matchbot.get_live_league_games()
         text = []
 
@@ -93,7 +93,7 @@ TRACKED_POSTS["wiki"] = wiki_thread
 
 while True:
     tracked = list(TRACKED_POSTS.keys())
-    log("[bot] tracking %d posts" % len(tracked))
+    log("tracking %d posts" % len(tracked))
     for post in tracked:
         process = TRACKED_POSTS[post]
         if not process.is_alive():
@@ -109,16 +109,16 @@ while True:
             continue
 
         if message.author not in APPROVED_SUBMITTERS:
-            message.reply("[bot] Sorry, you are not an approved submitter! Please ping sushi on discord. FeelsWeirdMan")
+            message.reply("Sorry, you are not an approved submitter! Please ping sushi on discord. FeelsWeirdMan")
             continue
         else:
-            log("[bot] a new message from %s!" % str(message.author))
+            log("a new message from %s!" % str(message.author))
 
         if message.subject == "matchbot":
             update(message)
         elif message.subject == "stop":
             stop(message)
         else:
-            message.reply("[bot] Sorry, %s is not a valid command. Ping sushi if you're confused" % message.subject)
+            message.reply("Sorry, %s is not a valid command. Ping sushi if you're confused" % message.subject)
 
     time.sleep(30)
