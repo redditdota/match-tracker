@@ -1,8 +1,11 @@
 import praw
+from prawcore.exceptions import RequestException
 from tokens import *
 import matchbot
 import multiprocessing
 import time
+import traceback
+import debug
 
 APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR", "monkeydoestoo",
                         "cloverdota", "0dst", "suriranyar-",
@@ -14,7 +17,20 @@ REQUIRED_FIELDS = ["match_id", "post_id"]
 TRACKED_POSTS = dict()
 
 def log(string):
-    print("[bot] [%s]" % time.strftime("%c") + string)
+    print("[bot][%s] " % time.strftime("%c") + str(string))
+
+
+def mark(message):
+    for i in range(3):
+        try:
+            message.mark_read()
+        except RequestException:
+            if i >= 2:
+                raise
+            else:
+                log("Failed to mark message from %s as unread, retrying" % message.author)
+                time.sleep(5 * i)
+
 
 def parse_message(message):
     error = []
@@ -32,7 +48,7 @@ def parse_message(message):
     if len(error) > 0:
         message.reply("\n".join(error))
         log("\n".join(error))
-        message.mark_read()
+        mark(message)
         return None
     else:
         return values
@@ -49,7 +65,7 @@ def update(message):
             reply = "missing field: " + field
             message.reply(reply)
             log(reply)
-            message.mark_read()
+            mark(message)
             return
 
     post = values["post_id"]
@@ -63,9 +79,11 @@ def update(message):
         p = multiprocessing.Process(target=matchbot.update_post, args=(post, match, ))
         p.start()
         TRACKED_POSTS[post] = p
-        message.mark_read()
     except:
         log("Error: unable to start thread")
+        print(traceback.format_exc())
+
+    mark(message)
 
 
 def wiki():
@@ -86,6 +104,7 @@ def wiki():
         time.sleep(60)
 
 
+debug.listen()
 wiki_thread = multiprocessing.Process(target=wiki, args=())
 wiki_thread.start()
 TRACKED_POSTS["wiki"] = wiki_thread
@@ -104,7 +123,6 @@ while True:
                 del TRACKED_POSTS[post]
 
     for message in TOURNAMENT_ACCT.inbox.unread():
-        message.mark_read()
         if message.subject not in SUBJECTS:
             continue
 
