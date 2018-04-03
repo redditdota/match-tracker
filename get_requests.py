@@ -8,7 +8,7 @@ import traceback
 import debug
 
 APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR", "monkeydoestoo",
-                        "cloverdota", "0dst", "suriranyar-",
+                        "cloverdota", "0dst", "suriranyar-", "its_muri",
                         "coronaria", "Leafeator", "Decency", "0Hellspawn0", "Intolerable"]
 SUBJECTS = ["matchbot", "stop"]
 TOURNAMENT_SUB = TOURNAMENT_ACCT.subreddit(SUBREDDIT)
