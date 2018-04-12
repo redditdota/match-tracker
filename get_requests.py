@@ -6,6 +6,7 @@ import multiprocessing
 import time
 import traceback
 import debug
+import sys
 
 APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR", "monkeydoestoo",
                         "cloverdota", "0dst", "suriranyar-", "its_muri",
@@ -18,6 +19,7 @@ TRACKED_POSTS = dict()
 
 def log(string):
     print("[bot][%s] " % time.strftime("%c") + str(string))
+    sys.stdout.flush()
 
 
 def mark(message):
@@ -116,7 +118,9 @@ while True:
     for post in tracked:
         process = TRACKED_POSTS[post]
         if not process.is_alive():
-            if process.exitcode < 0:
+            if process.exitcode != 0 or post is "wiki":
+                log("process died with exitcode %d" % process.exitcode)
+                TRACKED_POSTS[post].join()
                 TRACKED_POSTS[post] = multiprocessing.Process(target=process._target, args=process._args)
                 TRACKED_POSTS[post].start()
             else:

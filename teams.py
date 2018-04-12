@@ -13,7 +13,7 @@ TEAMS = {
     2672298: '[](/logo-infamous "Infamous")',
     2512249: '[](/logo-dc "Digital Chaos")',
     2640025: '[](/logo-igv "iG.Vitality")',
-    2108395: '[](/logo-tnc "TNC Pro Team")',
+    2108395: '[](/logo-tnc "TNC Predator")',
     3331948: '[](/logo-lfy "LGD.Forever Young")',
     15: '[](/logo-lgd "LGD Gaming")',
     1883502: '[](/logo-virtus "Virtus.Pro")',
