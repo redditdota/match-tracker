@@ -10,7 +10,8 @@ import sys
 
 APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR", "monkeydoestoo",
                         "cloverdota", "0dst", "suriranyar-", "its_muri",
-                        "coronaria", "Leafeator", "Decency", "0Hellspawn0", "Intolerable"]
+                        "coronaria", "Leafeator", "Decency", "0Hellspawn0", "Intolerable",
+                        "crimson589", "lestye", "JohnScofield"]
 SUBJECTS = ["matchbot", "stop"]
 TOURNAMENT_SUB = TOURNAMENT_ACCT.subreddit(SUBREDDIT)
 WIKI = praw.models.WikiPage(TOURNAMENT_ACCT, "dota2", "live_matches")
@@ -125,6 +126,7 @@ while True:
                 TRACKED_POSTS[post].start()
             else:
                 del TRACKED_POSTS[post]
+    log("done processing posts")
 
     for message in TOURNAMENT_ACCT.inbox.unread():
         if message.subject not in SUBJECTS:
