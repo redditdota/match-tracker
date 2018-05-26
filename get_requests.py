@@ -113,7 +113,7 @@ wiki_thread.start()
 TRACKED_POSTS["wiki"] = wiki_thread
 
 
-while True:
+def check_threads():
     tracked = list(TRACKED_POSTS.keys())
     log("tracking %d posts" % len(tracked))
     for post in tracked:
@@ -128,6 +128,7 @@ while True:
                 del TRACKED_POSTS[post]
     log("done processing posts")
 
+def process_messages():
     for message in TOURNAMENT_ACCT.inbox.unread():
         if message.subject not in SUBJECTS:
             continue
@@ -145,4 +146,14 @@ while True:
         else:
             message.reply("Sorry, %s is not a valid command. Ping sushi if you're confused" % message.subject)
 
+
+while True:
+    check_threads()
+    try:
+        process_messages()
+    except:
+        log("Error processing messages")
+        print(traceback.format_exc())
+
     time.sleep(30)
+
