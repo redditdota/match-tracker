@@ -21,6 +21,7 @@ TEAMS = {
     3: '[](/logo-col "compLexity Gaming")',
     726228: '[](/logo-vg "Vici Gaming")',
     5027210: '[](/logo-vgj "VGJ.Thunder")',
+    5228654: '[](/logo-vgj "VGJ.Storm")',
     36: '[](/logo-navi "Natus Vincere")',
     5039050: '[](/logo-kinguin "Team Kinguin")',
     5026801: '[](/logo-optic "OpTic Gaming")',
@@ -28,4 +29,6 @@ TEAMS = {
     2006913: '[](/logo-vega "Vega Squadron")',
     2512249: '[](/logo-dc "Digital Chaos")',
     5196328: '[](/logo-dc "Digital Chaos")',
+    5229127: '[](/logo-winstrike "Winstrike")',
+    5021898: '[](/logo-serenity "Team Serenity")',
 }
