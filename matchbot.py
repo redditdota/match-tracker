@@ -4,6 +4,7 @@ import sys
 import itertools
 import time
 import math
+import traceback
 from tokens import *
 from template import *
 from teams import *
@@ -25,8 +26,12 @@ def get(url):
                 time.sleep(10)
         except requests.exceptions.RequestException as e:
             print("[bot] ", url, e)
+            traceback.print_exc()
+            sys.stdout.flush()
         except json.decoder.JSONDecodeError as e:
             print("[bot] ", url, e)
+            traceback.print_exc()
+            sys.stdout.flush()
 
 
 def get_live_league_games():
@@ -276,6 +281,8 @@ def update_post(post_id, match_id):
             finished = _update_post(post_id, match_id)
         except Exception as e:
             print("Error " + str(e))
+            traceback.print_exc()
+            sys.stdout.flush()
             pass
         time.sleep(30)
 
@@ -287,6 +294,8 @@ def main(argv):
             finished = _update_post(argv[1], argv[2])
         except Exception as e:
             print("Error " + str(e))
+            traceback.print_exc()
+            sys.stdout.flush()
             pass
         time.sleep(30)
 

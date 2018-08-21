@@ -1,12 +1,17 @@
 import praw
+from prawcore.exceptions import RequestException
 from tokens import *
 import matchbot
 import multiprocessing
 import time
+import traceback
+import debug
+import sys
 
 APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR", "monkeydoestoo",
-                        "cloverdota", "0dst", "suriranyar-",
-                        "coronaria", "Leafeator", "Decency", "0Hellspawn0", "Intolerable"]
+                        "cloverdota", "0dst", "suriranyar-", "its_muri",
+                        "coronaria", "Leafeator", "Decency", "0Hellspawn0", "Intolerable",
+                        "crimson589", "lestye", "JohnScofield"]
 SUBJECTS = ["matchbot", "stop"]
 TOURNAMENT_SUB = TOURNAMENT_ACCT.subreddit(SUBREDDIT)
 WIKI = praw.models.WikiPage(TOURNAMENT_ACCT, "dota2", "live_matches")
@@ -14,7 +19,21 @@ REQUIRED_FIELDS = ["match_id", "post_id"]
 TRACKED_POSTS = dict()
 
 def log(string):
-    print("[bot] [%s]" % time.strftime("%c") + string)
+    print("[bot][%s] " % time.strftime("%c") + str(string))
+    sys.stdout.flush()
+
+
+def mark(message):
+    for i in range(3):
+        try:
+            message.mark_read()
+        except RequestException:
+            if i >= 2:
+                raise
+            else:
+                log("Failed to mark message from %s as unread, retrying" % message.author)
+                time.sleep(5 * i)
+
 
 def parse_message(message):
     error = []
@@ -25,14 +44,14 @@ def parse_message(message):
 
         parts = line.split(":")
         if len(parts) != 2:
-            error.append("[bot] invalid line: " + line)
+            error.append("invalid line: " + line)
             continue
         values[parts[0].strip()] = parts[1].strip().replace("\"", "").replace("\'", "")
 
     if len(error) > 0:
         message.reply("\n".join(error))
         log("\n".join(error))
-        message.mark_read()
+        mark(message)
         return None
     else:
         return values
@@ -46,10 +65,10 @@ def update(message):
 
     for field in REQUIRED_FIELDS:
         if field not in values:
-            reply = "[bot] missing field: " + field
+            reply = "missing field: " + field
             message.reply(reply)
             log(reply)
-            message.mark_read()
+            mark(message)
             return
 
     post = values["post_id"]
@@ -63,14 +82,16 @@ def update(message):
         p = multiprocessing.Process(target=matchbot.update_post, args=(post, match, ))
         p.start()
         TRACKED_POSTS[post] = p
-        message.mark_read()
     except:
         log("Error: unable to start thread")
+        print(traceback.format_exc())
+
+    mark(message)
 
 
 def wiki():
     while True:
-        log("[bot] Updating wiki")
+        log("Updating wiki")
         games  = matchbot.get_live_league_games()
         text = []
 
@@ -86,40 +107,53 @@ def wiki():
         time.sleep(60)
 
 
+debug.listen()
 wiki_thread = multiprocessing.Process(target=wiki, args=())
 wiki_thread.start()
 TRACKED_POSTS["wiki"] = wiki_thread
 
 
-while True:
+def check_threads():
     tracked = list(TRACKED_POSTS.keys())
-    log("[bot] tracking %d posts" % len(tracked))
+    log("tracking %d posts" % len(tracked))
     for post in tracked:
         process = TRACKED_POSTS[post]
         if not process.is_alive():
-            if process.exitcode < 0:
+            if process.exitcode != 0 or post is "wiki":
+                log("process died with exitcode %d" % process.exitcode)
+                TRACKED_POSTS[post].join()
                 TRACKED_POSTS[post] = multiprocessing.Process(target=process._target, args=process._args)
                 TRACKED_POSTS[post].start()
             else:
                 del TRACKED_POSTS[post]
+    log("done processing posts")
 
+def process_messages():
     for message in TOURNAMENT_ACCT.inbox.unread():
         if message.subject not in SUBJECTS:
             continue
 
         if message.author not in APPROVED_SUBMITTERS:
-            message.reply("[bot] Sorry, you are not an approved submitter! Please ping sushi on discord. FeelsWeirdMan")
-            message.mark_read()
+            message.reply("Sorry, you are not an approved submitter! Please ping sushi on discord. FeelsWeirdMan")
             continue
         else:
-            log("[bot] a new message from %s!" % str(message.author))
+            log("a new message from %s!" % str(message.author))
 
         if message.subject == "matchbot":
             update(message)
         elif message.subject == "stop":
             stop(message)
         else:
-            message.reply("[bot] Sorry, %s is not a valid command. Ping sushi if you're confused" % message.subject)
-            message.mark_read()
+            message.reply("Sorry, %s is not a valid command. Ping sushi if you're confused" % message.subject)
+
+
+while True:
+    check_threads()
+    try:
+        process_messages()
+    except:
+        log("Error processing messages")
+        print(traceback.format_exc())
 
     time.sleep(30)
+

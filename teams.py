@@ -13,7 +13,7 @@ TEAMS = {
     2672298: '[](/logo-infamous "Infamous")',
     2512249: '[](/logo-dc "Digital Chaos")',
     2640025: '[](/logo-igv "iG.Vitality")',
-    2108395: '[](/logo-tnc "TNC Pro Team")',
+    2108395: '[](/logo-tnc "TNC Predator")',
     3331948: '[](/logo-lfy "LGD.Forever Young")',
     15: '[](/logo-lgd "LGD Gaming")',
     1883502: '[](/logo-virtus "Virtus.Pro")',
@@ -29,6 +29,9 @@ TEAMS = {
     2006913: '[](/logo-vega "Vega Squadron")',
     2512249: '[](/logo-dc "Digital Chaos")',
     5196328: '[](/logo-dc "Digital Chaos")',
+    5051649: '[](/logo-immortals "Immortals")',
+    67: '[](/logo-pain "paiN Gaming")',
+    2621843: '[](/logo-spirit "Team Spirit")',
     5229127: '[](/logo-winstrike "Winstrike")',
     5021898: '[](/logo-serenity "Team Serenity")',
 }
