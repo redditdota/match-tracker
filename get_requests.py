@@ -9,7 +9,7 @@ import debug
 import sys
 
 APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR", "monkeydoestoo",
-                        "cloverdota", "0dst", "suriranyar-", "its_muri",
+                        "cloverdota", "0dst", "suriranyar-", "its_muri", "CommonSalt",
                         "coronaria", "Leafeator", "Decency", "0Hellspawn0", "Intolerable",
                         "crimson589", "lestye", "JohnScofield"]
 SUBJECTS = ["matchbot", "stop"]
