@@ -27,7 +27,6 @@ TEAMS = {
     5026801: '[](/logo-optic "OpTic Gaming")',
     350190: '[](/logo-fnatic "Fnatic")',
     2006913: '[](/logo-vega "Vega Squadron")',
-    2512249: '[](/logo-dc "Digital Chaos")',
     5196328: '[](/logo-dc "Digital Chaos")',
     5051649: '[](/logo-immortals "Immortals")',
     67: '[](/logo-pain "paiN Gaming")',
