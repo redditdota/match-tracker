@@ -119,6 +119,6 @@ HEROES = [
 '117',
 '118',
 '[](/hero-darkwillow "Dark Willow")',
-'[](/hero-pangolier "Pangolier")'
+'[](/hero-pangolier "Pangolier")',
 '[](/hero-grimstroke "Grimstroke")'
 ]
