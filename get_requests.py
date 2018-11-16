@@ -90,28 +90,15 @@ def update(message):
     mark(message)
 
 def stop(message):
-    values = parse_message(message)
-    if values is None:
-        return
-    log(values)
-
-    post = values["post_id"]
-
-    if "post_id" not in values:
-        reply = "missing field: post_id"
-        message.reply(reply)
-        log(reply)
-        mark(message)
-        return
+    post = message.body
 
     if post in TRACKED_POSTS:
-        message.reply("Post %s will be stopped :(" % post)
+        message.reply("Post %s will be stopped PepeHands" % post)
         TRACKED_POSTS[post].terminate()
         TRACKED_POSTS.pop(post, None)
-        log("Post %s will be stopped :(" % post)
+        log("Stopping post %s" % post)
     else:
-        message.reply("Post %s is not currently being updated" % post)
-        log("Post %s is not currently being updated" % post)
+        message.reply("Post %s is not currently being updated FeelsWeirdMan" % post)
 
     mark(message)
 
