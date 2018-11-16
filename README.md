@@ -1,6 +1,8 @@
 Create a file called "tokens.py" with
 
 ```
+import praw
+
 KEY = <Steam Web API Key>
 
 SUBREDDIT = "dota2"
