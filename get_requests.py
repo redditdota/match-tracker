@@ -15,7 +15,7 @@ APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR", "monkeyd
                         "crimson589", "lestye", "JohnScofield"]
 SUBJECTS = ["matchbot", "stop"]
 TOURNAMENT_SUB = TOURNAMENT_ACCT.subreddit(SUBREDDIT)
-WIKI = praw.models.WikiPage(TOURNAMENT_ACCT, "dota2", "live_matches")
+WIKI = praw.models.WikiPage(TOURNAMENT_ACCT, SUBREDDIT, "live_matches")
 REQUIRED_FIELDS = ["match_id", "post_id"]
 TRACKED_POSTS = dict()
 
@@ -89,6 +89,31 @@ def update(message):
 
     mark(message)
 
+def stop(message):
+    values = parse_message(message)
+    if values is None:
+        return
+    log(values)
+
+    post = values["post_id"]
+
+    if "post_id" not in values:
+        reply = "missing field: post_id"
+        message.reply(reply)
+        log(reply)
+        mark(message)
+        return
+
+    if post in TRACKED_POSTS:
+        message.reply("Post %s will be stopped :(" % post)
+        TRACKED_POSTS[post].terminate()
+        TRACKED_POSTS.pop(post, None)
+        log("Post %s will be stopped :(" % post)
+    else:
+        message.reply("Post %s is not currently being updated" % post)
+        log("Post %s is not currently being updated" % post)
+
+    mark(message)
 
 def wiki():
     while True:
@@ -157,4 +182,5 @@ while True:
         print(traceback.format_exc())
 
     time.sleep(30)
+
 
