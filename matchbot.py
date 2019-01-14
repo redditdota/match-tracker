@@ -28,7 +28,7 @@ def get(url):
             print("[bot] ", url, e)
             traceback.print_exc()
             sys.stdout.flush()
-        except json.decoder.JSONDecodeError as e:
+        except Exception as e:
             print("[bot] ", url, e)
             traceback.print_exc()
             sys.stdout.flush()
@@ -58,12 +58,15 @@ def get_match_detail(match_id):
 
 
 def get_player_name(account_id):
+    return ""
+    """
     response = get("https://api.steampowered.com/IDOTA2Fantasy_570/GetPlayerOfficialInfo/v1/?accountid=%s&key=%s" % (account_id, KEY))
     if "result" not in response or "Name" not in response["result"]:
         print("GetPlayerOfficialInfo Error:\n" + str(response))
         return str(account_id)
 
     return response["result"]["Name"]
+    """
 
 def get_team_name(team):
     if team["team_id"] in TEAMS:
