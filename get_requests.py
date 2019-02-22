@@ -9,7 +9,7 @@ import debug
 import sys
 
 APPROVED_SUBMITTERS = ["WaitForItAll", "stats95", "Gamerhcp", "772-LR", "monkeydoestoo",
-                        "cloverdota", "0dst", "suriranyar-", "its_muri", "CommonSalt", 
+                        "cloverdota", "0dst", "suriranyar-", "its_muri", "CommonSalt",
                         "vanes996",
                         "coronaria", "Leafeator", "Decency", "0Hellspawn0", "Intolerable",
                         "crimson589", "lestye", "JohnScofield"]
@@ -161,6 +161,7 @@ def process_messages():
 
 
 while True:
+    matchbot.update_cache()
     check_threads()
     try:
         process_messages()

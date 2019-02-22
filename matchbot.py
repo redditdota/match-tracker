@@ -5,6 +5,7 @@ import itertools
 import time
 import math
 import traceback
+import datetime
 from tokens import *
 from template import *
 from teams import *
@@ -14,6 +15,11 @@ from heroes import *
 START_TAG = "[](#start-match-details)"
 END_TAG = "[](#end-match-details)"
 GAME_NUMBER = 1
+LAST_UPDATE = None
+PRO_PLAYER_NAMES = {}
+
+def log(*arg):
+    print("[matchbot]", datetime.datetime.today().isoformat(), *arg)
 
 def get(url):
     while True:
@@ -22,14 +28,14 @@ def get(url):
             if response.status_code == requests.codes.ok:
                 return response.json()
             else:
-                print("[bot]", url, response.text)
+                log(url, response.text)
                 time.sleep(10)
         except requests.exceptions.RequestException as e:
-            print("[bot] ", url, e)
+            log(url, e)
             traceback.print_exc()
             sys.stdout.flush()
         except Exception as e:
-            print("[bot] ", url, e)
+            log(url, e)
             traceback.print_exc()
             sys.stdout.flush()
 
@@ -37,12 +43,12 @@ def get(url):
 def get_live_league_games():
     response = get("https://api.steampowered.com/IDOTA2Match_570/GetLiveLeagueGames/v0001/?key=%s" % KEY)
     if "result" not in response:
-        print("GetLiveLeagueGames Error:\n" + str(response))
+        log("GetLiveLeagueGames Error:\n" + str(response))
         return {}
 
     result = response["result"]
     if result["status"] != 200:
-        print("GetLiveLeagueGames Error: " + str(result["status"]))
+        log("GetLiveLeagueGames Error: " + str(result["status"]))
         return {}
     else:
         return result["games"]
@@ -51,18 +57,18 @@ def get_live_league_games():
 def get_match_detail(match_id):
     response = get("https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?match_id=%s&key=%s" % (match_id, KEY))
     if "result" not in response:
-        print("GetMatchDetails Error:\n" + str(response))
+        log("GetMatchDetails Error:\n" + str(response))
         return {}
 
     return response["result"]
 
 
 def get_player_name(account_id):
-    return ""
+    return PRO_PLAYER_NAMES.get(account_id, "")
     """
     response = get("https://api.steampowered.com/IDOTA2Fantasy_570/GetPlayerOfficialInfo/v1/?accountid=%s&key=%s" % (account_id, KEY))
     if "result" not in response or "Name" not in response["result"]:
-        print("GetPlayerOfficialInfo Error:\n" + str(response))
+        log("GetPlayerOfficialInfo Error:\n" + str(response))
         return str(account_id)
 
     return response["result"]["Name"]
@@ -255,7 +261,7 @@ def get_completed_match_info(match_id):
 
 def _update_post(post_id, match_id):
     post = TOURNAMENT_ACCT.submission(post_id)
-    print("[matchbot] Updating '%s' for match %s" % (post.title, match_id))
+    log("Updating '%s' for match %s" % (post.title, match_id))
 
     body = post.selftext
     start_idx = body.find(START_TAG)
@@ -283,20 +289,32 @@ def update_post(post_id, match_id):
         try:
             finished = _update_post(post_id, match_id)
         except Exception as e:
-            print("Error " + str(e))
+            log("Error " + str(e))
             traceback.print_exc()
             sys.stdout.flush()
             pass
         time.sleep(30)
 
+def update_cache():
+    global LAST_UPDATE
+    global PRO_PLAYER_NAMES
+    if LAST_UPDATE is None or LAST_UPDATE < datetime.datetime.today().date():
+        info = get("https://www.dota2.com/webapi/IDOTA2Fantasy/GetProPlayerInfo/v001")
+        if "player_infos" in info:
+            PRO_PLAYER_NAMES = {}
+            for player in info["player_infos"]:
+                PRO_PLAYER_NAMES[player["account_id"]] = player["name"]
+            log("pro player cache updated:", len(PRO_PLAYER_NAMES))
+            LAST_UPDATE = datetime.datetime.today().date()
 
 def main(argv):
+    update_cache()
     finished = False
     while not finished:
         try:
             finished = _update_post(argv[1], argv[2])
         except Exception as e:
-            print("Error " + str(e))
+            log("Error " + str(e))
             traceback.print_exc()
             sys.stdout.flush()
             pass
