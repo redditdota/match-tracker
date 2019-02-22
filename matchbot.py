@@ -103,7 +103,9 @@ def get_player_names(game):
     names = {}
     for player in game["players"]:
         aid = player["account_id"]
-        names[aid] = player.get("name", get_player_name(aid))
+        names[aid] = get_player_name(aid)
+        if names[aid] == "":
+            names[aid] = player.get("name", "")
     return names
 
 def get_player_stats(players, player_names):
