@@ -34,7 +34,7 @@ TEAMS = {
     5229127: '[](/logo-winstrike "Winstrike")',
     5021898: '[](/logo-serenity "Team Serenity")',
     6209166: '[](/logo-aster "Team Aster")',
-    6214538: '[](/logo-forward "Forward Gaming")',
+    6214538: '[](/logo-newbee "Newbee")',
     6187627: '[](/logo-tigers "Tigers")',
     6288801: '[](/logo-jstorm "J.Storm")',
     5194336: '[](/logo-dbg "DeathBringer Gaming")',
