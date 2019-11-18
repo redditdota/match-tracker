@@ -277,13 +277,16 @@ def _update_post(post_id, match_id):
     new_body = ""
     if len(match_info) == 0:
         match_info = get_completed_match_info(match_id)
-        new_body = body[:start_idx] + "\n" + match_info + "\n" + START_TAG + "\n" + body[end_idx:]
-        finished = True
+        if len(match_info) > 0:
+            new_body = body[:start_idx] + "\n" + match_info + "\n" + START_TAG + "\n" + body[end_idx:]
+            finished = True
+        else:
+            finished = False
     else:
         new_body = body[:start_idx + len(START_TAG)] + "\n" + match_info + "\n" + body[end_idx:]
         finished = False
 
-    if len(match_info) != 0:
+    if len(match_info) > 0:
         post.edit(new_body)
     return finished
 
