@@ -109,14 +109,18 @@ def wiki():
         text = []
 
         for t in games.keys():
-            text.append("#%s\n" % t)
+            game_text = []
             for game in games[t]:
                 if "radiant_team" not in game or "dire_team" not in game:
                     continue
                 mid = game["match_id"]
                 radiant = matchbot.get_team_name(game["radiant_team"])
                 dire = matchbot.get_team_name(game["dire_team"])
-                text.append("%s vs %s: [%d](http://www.trackdota.com/matches/%d) | [add to existing thread](https://www.reddit.com/message/compose/?to=d2tournamentthreads&subject=matchbot&message=match_id:%%20%d\npost_id:%%20POST_ID)" % (radiant, dire, mid, mid, mid))
+                game_text.append("* %s vs %s: [%d](http://www.trackdota.com/matches/%d) | [add to existing thread](https://www.reddit.com/message/compose/?to=d2tournamentthreads&subject=matchbot&message=match_id:%%20%d\npost_id:%%20POST_ID)" % (radiant, dire, mid, mid, mid))
+
+            if len(game_text) > 0:
+                text.append("###%s\n" % t)
+                text.append('\n'.join(game_text))
 
         WIKI.edit("\n\n".join(text), "update current live games")
 

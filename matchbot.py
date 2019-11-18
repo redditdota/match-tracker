@@ -53,6 +53,10 @@ def get_live_league_games():
         return {}
     else:
         games = result["games"]
+
+        if len(TOURNAMENT_LIST) == 0:
+            _update_tournaments()
+
         games_by_tournament = {}
         for game in games:
             t = TOURNAMENT_LIST.get(game["league_id"], "Unknown")
