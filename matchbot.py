@@ -17,6 +17,7 @@ END_TAG = "[](#end-match-details)"
 GAME_NUMBER = 1
 LAST_UPDATE = None
 PRO_PLAYER_NAMES = {}
+TOURNAMENT_LIST = {}
 
 def log(*arg):
     print("[matchbot]", datetime.datetime.today().isoformat(), *arg)
@@ -51,7 +52,15 @@ def get_live_league_games():
         log("GetLiveLeagueGames Error: " + str(result["status"]))
         return {}
     else:
-        return result["games"]
+        games = result["games"]
+        games_by_tournament = {}
+        for game in games:
+            t = TOURNAMENT_LIST.get(game["league_id"], "Unknown")
+            if t not in games_by_tournament:
+                games_by_tournament[t] = []
+            games_by_tournament[t].append(game)
+
+        return games_by_tournament
 
 
 def get_match_detail(match_id):
@@ -303,17 +312,43 @@ def update_post(post_id, match_id):
             pass
         time.sleep(30)
 
+def _update_players():
+    global PRO_PLAYER_NAMES
+    info = get("https://www.dota2.com/webapi/IDOTA2Fantasy/GetProPlayerInfo/v001")
+    if "player_infos" in info:
+        PRO_PLAYER_NAMES = {}
+        for player in info["player_infos"]:
+            PRO_PLAYER_NAMES[player["account_id"]] = player["name"]
+        log("pro player cache updated:", len(PRO_PLAYER_NAMES))
+        return True
+    return False
+
+
+def _update_tournaments():
+    global TOURNAMENT_LIST
+    info = get("https://www.dota2.com/webapi/IDOTA2DPC/GetLeagueInfoList/v0001/")
+    if "infos" in info:
+        TOURNAMENT_LIST = {}
+        for tournament in info["infos"]:
+            if tournament["status"] == 3:
+                TOURNAMENT_LIST[tournament["league_id"]] = tournament["name"]
+        log("active tournament list updated:", len(TOURNAMENT_LIST))
+        return True
+    else:
+        return False
+
+
 def update_cache():
     global LAST_UPDATE
-    global PRO_PLAYER_NAMES
+
+    success = True
     if LAST_UPDATE is None or LAST_UPDATE < datetime.datetime.today().date():
-        info = get("https://www.dota2.com/webapi/IDOTA2Fantasy/GetProPlayerInfo/v001")
-        if "player_infos" in info:
-            PRO_PLAYER_NAMES = {}
-            for player in info["player_infos"]:
-                PRO_PLAYER_NAMES[player["account_id"]] = player["name"]
-            log("pro player cache updated:", len(PRO_PLAYER_NAMES))
+        success &= _update_players()
+        success &= _update_tournaments()
+        if success:
             LAST_UPDATE = datetime.datetime.today().date()
+
+
 
 def main(argv):
     update_cache()
