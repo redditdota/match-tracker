@@ -187,6 +187,9 @@ def get_completed_match_info(match_id):
     match_id = int(match_id)
     game = get_match_detail(match_id)
 
+    if "radiant_win" not in game:
+        # game not actually completed
+        return ""
 
     radiant = TEAMS[game["radiant_team_id"]] if game.get("radiant_team_id", "missing") in TEAMS else game.get("radiant_name", "Radiant")
     dire = TEAMS[game["dire_team_id"]] if game.get("dire_team_id", "missing") in TEAMS else game.get("dire_name", "Dire")
