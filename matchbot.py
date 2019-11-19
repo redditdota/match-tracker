@@ -190,7 +190,7 @@ def get_live_match_info(match_id):
     games = get_live_league_games()
 
     for game in games:
-        if game["match_id"] == match_id:
+        if "match_id" in game and game["match_id"] == match_id:
             return parse_live_game(game)
 
     return ""
