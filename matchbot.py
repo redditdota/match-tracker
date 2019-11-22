@@ -301,6 +301,8 @@ def _update_post(post_id, match_id):
 
     if len(match_info) > 0:
         post.edit(new_body)
+    else:
+        log("Skip updating this cycle")
     return finished
 
 
