@@ -187,11 +187,12 @@ def parse_live_game(game):
 
 def get_live_match_info(match_id):
     match_id = int(match_id)
-    games = get_live_league_games()
+    games_by_tournament = get_live_league_games()
 
-    for game in games:
-        if "match_id" in game and game["match_id"] == match_id:
-            return parse_live_game(game)
+    for games in games_by_tournament.values():
+        for game in games:
+            if "match_id" in game and game["match_id"] == match_id:
+                return parse_live_game(game)
 
     return ""
 
