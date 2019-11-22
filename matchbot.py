@@ -279,7 +279,7 @@ def get_completed_match_info(match_id):
 
 def _update_post(post_id, match_id):
     post = TOURNAMENT_ACCT.submission(post_id)
-    log("Updating '%s' for match %s" % (post.title, match_id))
+    log("Attempting to update '%s' for match %s" % (post.title, match_id))
 
     body = post.selftext
     start_idx = body.find(START_TAG)
@@ -289,10 +289,12 @@ def _update_post(post_id, match_id):
     match_info = get_live_match_info(match_id)
     new_body = ""
     if len(match_info) == 0:
+        log("Not a live match...?")
         match_info = get_completed_match_info(match_id)
         if len(match_info) > 0:
             new_body = body[:start_idx] + "\n" + match_info + "\n" + START_TAG + "\n" + body[end_idx:]
             finished = True
+            log("Match completed")
         else:
             finished = False
     else:
