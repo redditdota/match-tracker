@@ -48,4 +48,5 @@ TEAMS = {
     5327206: '[Thunder Predator](/logo-thunder "Thunder Predator")',
     3785359: '[BOOM ID](/logo-boomid "BOOM ID")',
     6214618: '[paiN X](/logo-painx "paiN X")',
+    6214973: '[Ninjas in Pyjamas](/logo-nip "Ninjas in Pyjamas")',
 }
