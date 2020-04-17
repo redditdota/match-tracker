@@ -31,6 +31,7 @@ TEAMS = {
     5051649: '[Immortals](/logo-immortals "Immortals")',
     67: '[paiN Gaming](/logo-pain "paiN Gaming")',
     2621843: '[Team Spirit](/logo-spirit "Team Spirit")',
+    7119388: '[Team Spirit](/logo-spirit "Team Spirit")',
     5229127: '[Winstrike](/logo-winstrike "Winstrike")',
     5021898: '[Team Serenity](/logo-serenity "Team Serenity")',
     6209166: '[Team Aster](/logo-aster "Team Aster")',
