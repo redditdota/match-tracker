@@ -7,9 +7,9 @@ SCORE_BOARD = """
 BANS = """
 | Radiant | Bans     | vs. | Bans     | Dire |
 |:-------:|:--------:|:---:|:--------:|:----:|
-| %s      | %s %s %s | vs. | %s %s %s |  %s  |
+| %s      | %s %s    | vs. | %s %s    |  %s  |
+|         | %s %s %s | vs. | %s %s %s |      |
 |         | %s %s    | vs. | %s %s    |      |
-|         | %s       | vs. | %s       |      |
 """
 
 PICKS = """
@@ -20,7 +20,7 @@ PICKS = """
 |         | %s    | vs. | %s    |      |
 """
 
-LIVE ="""
+LIVE = """
 | Hero | Player | Level | K/D/A    | LH/D | Net Worth | GPM | XPM |
 |:----:|:-------|:-----:|:--------:|:--:|:---------:|:---:|:---:|
 | %s   | %s     | %d    | %d/%d/%d | %d/%d | %d        | %d  | %d  |
@@ -36,7 +36,7 @@ LIVE ="""
 | %s   | %s     | %d    | %d/%d/%d | %d/%d | %d        | %d  | %d  |
 """
 
-END ="""
+END = """
 | Hero | Player | Level | K/D/A    | LH/D | Gold Spent | GPM | XPM |
 |:----:|:-------|:-----:|:--------:|:--:|:---------:|:---:|:---:|
 | %s   | %s     | %d    | %d/%d/%d | %d/%d | %d        | %d  | %d  |
@@ -51,7 +51,3 @@ END ="""
 | %s   | %s     | %d    | %d/%d/%d | %d/%d | %d        | %d  | %d  |
 | %s   | %s     | %d    | %d/%d/%d | %d/%d | %d        | %d  | %d  |
 """
-
-
-
-

@@ -19,8 +19,10 @@ LAST_UPDATE = None
 PRO_PLAYER_NAMES = {}
 TOURNAMENT_LIST = {}
 
+
 def log(*arg):
     print("[matchbot]", datetime.datetime.today().isoformat(), *arg)
+
 
 def get(url):
     while True:
@@ -42,7 +44,10 @@ def get(url):
 
 
 def get_live_league_games():
-    response = get("https://api.steampowered.com/IDOTA2Match_570/GetLiveLeagueGames/v0001/?key=%s" % KEY)
+    response = get(
+        "https://api.steampowered.com/IDOTA2Match_570/GetLiveLeagueGames/v0001/?key=%s"
+        % KEY
+    )
     if "result" not in response:
         log("GetLiveLeagueGames Error:\n" + str(response))
         return {}
@@ -68,7 +73,10 @@ def get_live_league_games():
 
 
 def get_match_detail(match_id):
-    response = get("https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?match_id=%s&key=%s" % (match_id, KEY))
+    response = get(
+        "https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?match_id=%s&key=%s"
+        % (match_id, KEY)
+    )
     if "result" not in response:
         log("GetMatchDetails Error:\n" + str(response))
         return {}
@@ -87,6 +95,7 @@ def get_player_name(account_id):
     return response["result"]["Name"]
     """
 
+
 def get_team_name(team):
     if team["team_id"] in TEAMS:
         return TEAMS[team["team_id"]]
@@ -95,7 +104,7 @@ def get_team_name(team):
 
 
 def get_bans(team):
-    bans = [""] * 6
+    bans = [""] * 7
     i = 0
     for hero in team.get("bans", []):
         bans[i] = HEROES[hero["hero_id"]]
@@ -121,6 +130,7 @@ def get_player_names(game):
             names[aid] = player.get("name", "")
     return names
 
+
 def get_player_stats(players, player_names):
     info = [["ERROR", "ERROR", -1, -1, -1, -1, -1, -1, -1, -1]] * 5
     i = 0
@@ -135,11 +145,13 @@ def get_player_stats(players, player_names):
             player["assists"],
             player["last_hits"],
             player["denies"],
-            player.get("net_worth", player.get('gold_spent', 0)),
+            player.get("net_worth", player.get("gold_spent", 0)),
             player["gold_per_min"],
-            player["xp_per_min"]]
+            player["xp_per_min"],
+        ]
         i += 1
     return list(itertools.chain.from_iterable(info))
+
 
 def parse_live_game(game):
     global GAME_NUMBER
@@ -161,17 +173,52 @@ def parse_live_game(game):
     else:
         text += "##Duration: %02d:%02d" % (math.floor(duration / 60), duration % 60)
 
-    text += SCORE_BOARD % (radiant, scoreboard["radiant"]["score"], scoreboard["dire"]["score"], dire)
+    text += SCORE_BOARD % (
+        radiant,
+        scoreboard["radiant"]["score"],
+        scoreboard["dire"]["score"],
+        dire,
+    )
     text += "\n"
 
     rb = get_bans(scoreboard["radiant"])
     db = get_bans(scoreboard["dire"])
-    text += BANS % (radiant, rb[0], rb[1], rb[2], db[0], db[1], db[2], dire, rb[3], rb[4], db[3], db[4], rb[5], db[5])
+    text += BANS % (
+        radiant,
+        rb[0],
+        rb[1],
+        db[0],
+        db[1],
+        dire,
+        rb[2],
+        rb[3],
+        rb[4],
+        db[2],
+        db[3],
+        db[4],
+        rb[5],
+        rb[6],
+        db[5],
+        db[6],
+    )
     text += "\n"
 
     rp = get_picks(scoreboard["radiant"])
     dp = get_picks(scoreboard["dire"])
-    text += PICKS % (radiant, rp[0], rp[1], dp[0], dp[1], dire, rp[2], rp[3], dp[2], dp[3], rp[4], dp[4])
+    text += PICKS % (
+        radiant,
+        rp[0],
+        rp[1],
+        dp[0],
+        dp[1],
+        dire,
+        rp[2],
+        rp[3],
+        dp[2],
+        dp[3],
+        rp[4],
+        dp[4],
+    )
     text += "\n"
 
     player_names = get_player_names(game)
@@ -205,8 +252,16 @@ def get_completed_match_info(match_id):
         # game not actually completed
         return ""
 
-    radiant = TEAMS[game["radiant_team_id"]] if game.get("radiant_team_id", "missing") in TEAMS else game.get("radiant_name", "Radiant")
-    dire = TEAMS[game["dire_team_id"]] if game.get("dire_team_id", "missing") in TEAMS else game.get("dire_name", "Dire")
+    radiant = (
+        TEAMS[game["radiant_team_id"]]
+        if game.get("radiant_team_id", "missing") in TEAMS
+        else game.get("radiant_name", "Radiant")
+    )
+    dire = (
+        TEAMS[game["dire_team_id"]]
+        if game.get("dire_team_id", "missing") in TEAMS
+        else game.get("dire_name", "Dire")
+    )
 
     victor = ""
     if game["radiant_win"] == 1:
@@ -229,8 +284,8 @@ def get_completed_match_info(match_id):
     text += SCORE_BOARD % (radiant, game["radiant_score"], game["dire_score"], dire)
     text += "\n"
 
-    rb = [""] * 6
-    db = [""] * 6
+    rb = [""] * 7
+    db = [""] * 7
     rp = [""] * 5
     dp = [""] * 5
 
@@ -255,21 +310,60 @@ def get_completed_match_info(match_id):
                 db[db_idx] = HEROES[pb["hero_id"]]
                 db_idx += 1
 
-    text += BANS % (radiant, rb[0], rb[1], rb[2], db[0], db[1], db[2], dire, rb[3], rb[4], db[3], db[4], rb[5], db[5])
+    text += BANS % (
+        radiant,
+        rb[0],
+        rb[1],
+        db[0],
+        db[1],
+        dire,
+        rb[2],
+        rb[3],
+        rb[4],
+        db[2],
+        db[3],
+        db[4],
+        rb[5],
+        rb[6],
+        db[5],
+        db[6],
+    )
     text += "\n"
-    text += PICKS % (radiant, rp[0], rp[1], dp[0], dp[1], dire, rp[2], rp[3], dp[2], dp[3], rp[4], dp[4])
+    text += PICKS % (
+        radiant,
+        rp[0],
+        rp[1],
+        dp[0],
+        dp[1],
+        dire,
+        rp[2],
+        rp[3],
+        dp[2],
+        dp[3],
+        rp[4],
+        dp[4],
+    )
     text += "\n"
 
     player_names = get_player_names(game)
 
-    rplayers = get_player_stats([player for player in game["players"] if player["player_slot"] < 5], player_names)
-    dplayers = get_player_stats([player for player in game["players"] if player["player_slot"] > 5], player_names)
+    rplayers = get_player_stats(
+        [player for player in game["players"] if player["player_slot"] < 5],
+        player_names,
+    )
+    dplayers = get_player_stats(
+        [player for player in game["players"] if player["player_slot"] > 5],
+        player_names,
+    )
     text += END % (*rplayers, *dplayers)
     text += "\n"
 
-    text += "More information on [Dotabuff](http://dotabuff.com/matches/%d), \
+    text += (
+        "More information on [Dotabuff](http://dotabuff.com/matches/%d), \
     [OpenDota](https://www.opendota.com/matches/%d), \
-    and [datDota](http://datdota.com/matches/%d)" % (match_id, match_id, match_id)
+    and [datDota](http://datdota.com/matches/%d)"
+        % (match_id, match_id, match_id)
+    )
 
     text += "\n"
     text += "_____"
@@ -293,13 +387,27 @@ def _update_post(post_id, match_id):
         log("Not a live match...?")
         match_info = get_completed_match_info(match_id)
         if len(match_info) > 0:
-            new_body = body[:start_idx] + "\n" + match_info + "\n" + START_TAG + "\n" + body[end_idx:]
+            new_body = (
+                body[:start_idx]
+                + "\n"
+                + match_info
+                + "\n"
+                + START_TAG
+                + "\n"
+                + body[end_idx:]
+            )
             finished = True
             log("Match completed")
         else:
             finished = False
     else:
-        new_body = body[:start_idx + len(START_TAG)] + "\n" + match_info + "\n" + body[end_idx:]
+        new_body = (
+            body[: start_idx + len(START_TAG)]
+            + "\n"
+            + match_info
+            + "\n"
+            + body[end_idx:]
+        )
         finished = False
 
     if len(match_info) > 0:
@@ -320,6 +428,7 @@ def update_post(post_id, match_id):
             sys.stdout.flush()
             pass
         time.sleep(30)
+
 
 def _update_players():
     global PRO_PLAYER_NAMES
@@ -358,7 +467,6 @@ def update_cache():
             LAST_UPDATE = datetime.datetime.today().date()
 
 
-
 def main(argv):
     update_cache()
     finished = False
@@ -375,4 +483,3 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv)
-
