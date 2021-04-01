@@ -6,6 +6,7 @@ import time
 import math
 import traceback
 import datetime
+import threading
 from tokens import *
 from template import *
 from teams import *
@@ -18,6 +19,7 @@ GAME_NUMBER = 1
 LAST_UPDATE = None
 PRO_PLAYER_NAMES = {}
 TOURNAMENT_LIST = {}
+LOCK = threading.Lock()
 
 
 def log(*arg):
@@ -421,13 +423,14 @@ def update_post(post_id, match_id):
     finished = False
     while not finished:
         try:
-            finished = _update_post(post_id, match_id)
+            with LOCK:
+                finished = _update_post(post_id, match_id)
+                time.sleep(30)
         except Exception as e:
             log("Error " + str(e))
             traceback.print_exc()
             sys.stdout.flush()
             pass
-        time.sleep(30)
 
 
 def _update_players():
