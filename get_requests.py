@@ -203,7 +203,6 @@ if __name__ == "__main__":
     TRACKED_POSTS["wiki"] = wiki_thread
 
     while True:
-        matchbot.update_cache()
         check_threads()
         try:
             stop = process_messages()

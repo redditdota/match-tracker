@@ -7,6 +7,9 @@ import math
 import traceback
 import datetime
 import threading
+import os
+import cachetools.func
+import pickle
 from tokens import *
 from template import *
 from teams import *
@@ -16,9 +19,7 @@ from heroes import *
 START_TAG = "[](#start-match-details)"
 END_TAG = "[](#end-match-details)"
 GAME_NUMBER = 1
-LAST_UPDATE = None
-PRO_PLAYER_NAMES = {}
-TOURNAMENT_LIST = {}
+
 LOCK = threading.Lock()
 
 
@@ -61,12 +62,9 @@ def get_live_league_games():
     else:
         games = result["games"]
 
-        if len(TOURNAMENT_LIST) == 0:
-            _update_tournaments()
-
         games_by_tournament = {}
         for game in games:
-            t = TOURNAMENT_LIST.get(game["league_id"], "Unknown")
+            t = get_tournaments().get(game["league_id"], "Unknown")
             if t not in games_by_tournament:
                 games_by_tournament[t] = []
             games_by_tournament[t].append(game)
@@ -87,15 +85,7 @@ def get_match_detail(match_id):
 
 
 def get_player_name(account_id):
-    return PRO_PLAYER_NAMES.get(account_id, "")
-    """
-    response = get("https://api.steampowered.com/IDOTA2Fantasy_570/GetPlayerOfficialInfo/v1/?accountid=%s&key=%s" % (account_id, KEY))
-    if "result" not in response or "Name" not in response["result"]:
-        log("GetPlayerOfficialInfo Error:\n" + str(response))
-        return str(account_id)
-
-    return response["result"]["Name"]
-    """
+    return get_all_players().get(account_id, "")
 
 
 def get_team_name(team):
@@ -433,41 +423,52 @@ def update_post(post_id, match_id):
             pass
 
 
-def _update_players():
-    global PRO_PLAYER_NAMES
+@cachetools.func.ttl_cache(maxsize=128, ttl=60 * 60)
+def get_all_players() -> dict:
+    os.makedirs("cache", exist_ok=True)
+    if os.path.exists("cache/players.pkl"):
+        with open("cache/players.pkl", "rb") as f:
+            (last_update, cache) = pickle.load(f)
+            if last_update <= datetime.datetime.today().date():
+                return cache
+
     info = get("https://www.dota2.com/webapi/IDOTA2Fantasy/GetProPlayerInfo/v001")
     if "player_infos" in info:
-        PRO_PLAYER_NAMES = {}
+        pro_player_names = {}
         for player in info["player_infos"]:
-            PRO_PLAYER_NAMES[player["account_id"]] = player["name"]
-        log("pro player cache updated:", len(PRO_PLAYER_NAMES))
-        return True
-    return False
+            pro_player_names[player["account_id"]] = player["name"]
+        log("pro player cache updated:", len(pro_player_names))
+
+        with open("cache/players.pkl", "wb") as f:
+            pickle.dump((datetime.datetime.today().date(), pro_player_names), f)
+
+        return pro_player_names
+    return {}
 
 
-def _update_tournaments():
-    global TOURNAMENT_LIST
+@cachetools.func.ttl_cache(maxsize=128, ttl=60 * 60)
+def get_tournaments() -> dict:
+    os.makedirs("cache", exist_ok=True)
+    if os.path.exists("cache/tournaments.pkl"):
+        with open("cache/tournaments.pkl", "rb") as f:
+            (last_update, cache) = pickle.load(f)
+            if last_update <= datetime.datetime.today().date():
+                return cache
+
     info = get("https://www.dota2.com/webapi/IDOTA2DPC/GetLeagueInfoList/v0001/")
     if "infos" in info:
-        TOURNAMENT_LIST = {}
+        tournament_list = {}
         for tournament in info["infos"]:
             if tournament["status"] == 3:
-                TOURNAMENT_LIST[tournament["league_id"]] = tournament["name"]
-        log("active tournament list updated:", len(TOURNAMENT_LIST))
-        return True
+                tournament_list[tournament["league_id"]] = tournament["name"]
+        log("active tournament list updated:", len(tournament_list))
+
+        with open("cache/tournaments.pkl", "wb") as f:
+            pickle.dump((datetime.datetime.today().date(), tournament_list), f)
+
+        return tournament_list
     else:
-        return False
-
-
-def update_cache():
-    global LAST_UPDATE
-
-    success = True
-    if LAST_UPDATE is None or LAST_UPDATE < datetime.datetime.today().date():
-        success &= _update_players()
-        success &= _update_tournaments()
-        if success:
-            LAST_UPDATE = datetime.datetime.today().date()
+        return {}
 
 
 def main(argv):
