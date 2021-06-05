@@ -50,4 +50,12 @@ TEAMS = {
     3785359: '[BOOM ID](/logo-boomid "BOOM ID")',
     6214618: '[paiN X](/logo-painx "paiN X")',
     6214973: '[Ninjas in Pyjamas](/logo-nip "Ninjas in Pyjamas")',
+    7391077: '[Thunder Predator](/logo-thunder "Thunder Predator")',
+    8360138: '[OB Esports x Neon](/logo-neon "OB Esports x Neon")',
+    7390454: '[Quincy Crew](/logo-quincycrew "Quincy Crew")',
+    8254400: '[beastcoast](/logo-beastcoast "beastcoast")',
+    7298091: '[NoPing Esports](/logo-dota "NoPing Esports")',
+    8214850: '[T1](/logo-t1 "T1")',
+    8254145: '[Execration](/logo-execration "Execration")',
+    8310936: '[AS Monaco Gambit](/logo-gambit "AS Monaco Gambit")',
 }
