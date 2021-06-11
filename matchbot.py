@@ -380,7 +380,7 @@ def _update_post(post_id, match_id):
         log("Not a live match...?")
         global GAME_NUMBER
         if GAME_NUMBER is None:
-            game_numbers = re.findall("Game ([0-9]+)", body)
+            game_numbers = re.findall("Game ([0-9]+)", body[:start_idx])
             if len(game_numbers) > 0:
                 GAME_NUMBER = int(game_numbers[-1]) + 1
             else:
