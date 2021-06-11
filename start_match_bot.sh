@@ -1,2 +1,2 @@
-cd /home/pi/rdota2/match-tracker
+#cd /home/pi/rdota2/match-tracker
 python3 get_requests.py
