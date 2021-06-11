@@ -10,6 +10,7 @@ import threading
 import os
 import cachetools.func
 import pickle
+import re
 from tokens import *
 from template import *
 from teams import *
@@ -18,7 +19,7 @@ from heroes import *
 
 START_TAG = "[](#start-match-details)"
 END_TAG = "[](#end-match-details)"
-GAME_NUMBER = 1
+GAME_NUMBER = None
 
 LOCK = threading.Lock()
 
@@ -377,6 +378,14 @@ def _update_post(post_id, match_id):
     new_body = ""
     if len(match_info) == 0:
         log("Not a live match...?")
+        global GAME_NUMBER
+        if GAME_NUMBER is None:
+            game_numbers = re.findall("Game ([0-9]+)", body)
+            if len(game_numbers) > 0:
+                GAME_NUMBER = int(game_numbers[-1]) + 1
+            else:
+                GAME_NUMBER = 1
+
         match_info = get_completed_match_info(match_id)
         if len(match_info) > 0:
             new_body = (
