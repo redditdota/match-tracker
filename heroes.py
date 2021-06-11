@@ -122,7 +122,7 @@ HEROES = [
     '[Pangolier](/hero-pangolier "Pangolier")',
     '[Grimstroke](/hero-grimstroke "Grimstroke")',
     "122",
-    "123",
+    '[Hoodwink](/hero-hoodwink "Hoodwink")',
     "124",
     "125",
     '[Void Spirit](/hero-voidspirit "Void Spirit")',
