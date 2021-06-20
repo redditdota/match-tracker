@@ -58,4 +58,5 @@ TEAMS = {
     8214850: '[T1](/logo-t1 "T1")',
     8254145: '[Execration](/logo-execration "Execration")',
     8310936: '[AS Monaco Gambit](/logo-gambit "AS Monaco Gambit")',
+    7554697: '[Nigma](/logo-nigma "Nigma")',
 }
