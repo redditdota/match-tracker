@@ -22,7 +22,7 @@ APPROVED_SUBMITTERS = [
     "-Trell-",
     "slurpycow112",
     "blankjanne",
-    "mburst"
+    "mburst",
 ]
 SUBJECTS = ["matchbot", "stop"]
 TOURNAMENT_SUB = TOURNAMENT_ACCT.subreddit(SUBREDDIT)
