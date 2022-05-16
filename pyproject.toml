@@ -1,0 +1,11 @@
+[tool.poetry]
+name = "root"
+version = "0.0.0"
+description = "Match tracking bot for r/dota2"
+authors = ["Sushi"]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+cachetools = "*"
+praw = "*"
+urllib3 = "*"
