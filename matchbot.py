@@ -481,7 +481,6 @@ def get_tournaments() -> dict:
 
 
 def main(argv):
-    update_cache()
     finished = False
     while not finished:
         try:

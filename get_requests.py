@@ -198,15 +198,22 @@ def process_messages() -> bool:
     return False
 
 
-if __name__ == "__main__":
-
-    debug.listen()
+def start_wiki_thread():
     wiki_thread = multiprocessing.Process(target=wiki, args=())
     wiki_thread.start()
     TRACKED_POSTS["wiki"] = wiki_thread
 
+
+if __name__ == "__main__":
+
+    debug.listen()
+    start_wiki_thread()
+
     while True:
         check_threads()
+        if len(TRACKED_POSTS) == 0:
+            start_wiki_thread()
+
         try:
             stop = process_messages()
             if stop:
