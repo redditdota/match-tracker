@@ -17,6 +17,7 @@ TEAMS = {
     3331948: '[LGD.Forever Young](/logo-lfy "LGD.Forever Young")',
     15: '[PSG.LGD](/logo-lgd "PSG.LGD")',
     1883502: '[Virtus.pro](/logo-virtus "Virtus.pro")',
+    8724984: '[Virtus.pro](/logo-virtus "Virtus.pro")',
     543897: '[Mineski](/logo-mineski "Mineski")',
     3: '[compLexity Gaming](/logo-col "compLexity Gaming")',
     726228: '[Vici Gaming](/logo-vg "Vici Gaming")',
