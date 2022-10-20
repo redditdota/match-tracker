@@ -70,4 +70,5 @@ TEAMS = {
     8721219: '[BetBoom Team](/logo-betboom "BetBoom Team")',
     8131728 : '[Hokori](/logo-hokori "Hokori")',
     7390454: '[Soniqs](/logo-soniqs "Soniqs")',
+    6813943972: '[BOOM Esports](/logo-boomid "BOOM Esports")',
 }
