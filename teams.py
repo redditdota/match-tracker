@@ -48,7 +48,7 @@ TEAMS = {
     5207190: '[Team Admiral]/logo-admiral "Team Admiral")',
     3705786: '[Mad Kings](/logo-madkings "Mad Kings")',
     5327206: '[Thunder Awaken](/logo-thunder "Thunder Awaken")',
-    3785359: '[BOOM Esports](/logo-boomid "BOOM Esports")',
+    7732977: '[BOOM Esports](/logo-boomid "BOOM Esports")',
     6214618: '[paiN X](/logo-painx "paiN X")',
     6214973: '[Ninjas in Pyjamas](/logo-nip "Ninjas in Pyjamas")',
     7391077: '[Thunder Predator](/logo-thunder "Thunder Predator")',
@@ -70,5 +70,4 @@ TEAMS = {
     8721219: '[BetBoom Team](/logo-betboom "BetBoom Team")',
     8131728 : '[Hokori](/logo-hokori "Hokori")',
     7390454: '[Soniqs](/logo-soniqs "Soniqs")',
-    6813943972: '[BOOM Esports](/logo-boomid "BOOM Esports")',
 }
