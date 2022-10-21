@@ -151,7 +151,7 @@ def wiki():
                 text.append("###%s\n" % t)
                 text.append("\n".join(game_text))
 
-        WIKI.edit("\n\n".join(text), "update current live games")
+        WIKI.edit(content="\n\n".join(text), reason="update current live games")
 
         log("added %d games" % len(text))
 
