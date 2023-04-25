@@ -137,4 +137,5 @@ HEROES = [
     '[Dawnbreaker](/hero-dawnbreaker "Dawnbreaker")',
     '[Marci](/hero-marci "Marci")',
     '[Primal Beast](/hero-primalbeast "Primal Beast")',
+    '[Muerta](/hero-muerta "Muerta")',
 ]
