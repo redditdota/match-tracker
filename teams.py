@@ -71,4 +71,8 @@ TEAMS = {
     8721219: '[BetBoom Team](/logo-betboom "BetBoom Team")',
     8131728 : '[Hokori](/logo-hokori "Hokori")',
     7390454: '[Soniqs](/logo-soniqs "Soniqs")',
+    1061269: '[Keyd Stars](/logo-keyd "Keyd Stars")',
+    8574561: '[Azure Ray](/logo-azureray "Azure Ray")',
+    7422789: '[9Pandas](/logo-9pandas "9Pandas")',
+    8728920: '[nouns](/logo-nouns "nouns")',
 }
