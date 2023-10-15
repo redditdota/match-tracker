@@ -75,4 +75,5 @@ TEAMS = {
     8574561: '[Azure Ray](/logo-azureray "Azure Ray")',
     7422789: '[9Pandas](/logo-9pandas "9Pandas")',
     8728920: '[nouns](/logo-nouns "nouns")',
+    8255888: '[BetBoom](/logo-betboom "BetBoom")',
 }
