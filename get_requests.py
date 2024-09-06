@@ -143,8 +143,8 @@ def wiki():
                 radiant = matchbot.get_team_name(game["radiant_team"])
                 dire = matchbot.get_team_name(game["dire_team"])
                 game_text.append(
-                    "* %s vs %s: [%d](http://www.trackdota.com/matches/%d) | [add to existing thread](https://www.reddit.com/message/compose/?to=d2tournamentthreads&subject=matchbot&message=match_id:%%20%d\npost_id:%%20POST_ID)"
-                    % (radiant, dire, mid, mid, mid)
+                    "* %s vs %s: [add to existing thread](https://www.reddit.com/message/compose/?to=d2tournamentthreads&subject=matchbot&message=match_id:%%20%d\npost_id:%%20POST_ID)"
+                    % (radiant, dire, mid)
                 )
 
             if len(game_text) > 0:
