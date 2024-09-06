@@ -67,7 +67,7 @@ TEAMS = {
     8291895: '[Tundra Esports](/logo-tundra "Tundra Esports")',
     8599101: '[Gaimin Gladiators](/logo-gg "Gaimin Gladiators")',
     8597976: '[Talon Esports](/logo-talon "Talon Esports")',
-    8605863: '[Entity](/logo-entity "Entity")',
+    8605863: '[Cloud 9](/logo-c9 "Cloud 9")',
     8721219: '[BetBoom Team](/logo-betboom "BetBoom Team")',
     8131728: '[Hokori](/logo-hokori "Hokori")',
     7390454: '[Soniqs](/logo-soniqs "Soniqs")',
